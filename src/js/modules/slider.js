@@ -3,29 +3,30 @@ export default class Slider {
         this.page = document.querySelector(page);
         this.slides = this.page.children;
         this.btns = document.querySelectorAll(btns);
-        this.slideIndex = 1;
+        this.currentSlide = 1;
     }
 
-    showSlides(n) {
+    showSlides(slideIndex) {
         // When we slide till the end, slider will come to first slider
-        if (n > this.slides.length) {
-            this.slideIndex = 1;
+        if (slideIndex > this.slides.length) {
+            this.currentSlide = 1;
         }
 
         // Vise versa
-        if (n < 1) {
-            this.slideIndex = this.slides.length;
+        if (slideIndex < 1) {
+            this.currentSlide = this.slides.length;
         }
 
         // Hide all slides in page
         this.slides.forEach(slide => slide.style.display = 'none');
 
         // Show first slide
-        this.slides[this.slideIndex - 1].style.display = 'block';
+        this.slides[this.currentSlide - 1].style.display = 'block';
     }
 
-    plusSlides(n) {
-        this.showSlides(this.slideIndex += n);
+    // Add or subtract slide
+    plusSlides(slideIndex) {
+        this.showSlides(this.currentSlide += slideIndex);
     }
 
     render() {
@@ -33,8 +34,15 @@ export default class Slider {
             btn.addEventListener('click', () => {
                 this.plusSlides(1);
             });
+
+            btn.parentNode.previousElementSibling.addEventListener('click', e => {
+                e.preventDefault();
+                this.currentSlide = 1;
+                this.showSlides(this.currentSlide);
+            });
         });
 
-        this.showSlides(this.slideIndex);
+        // Start first initialization
+        this.showSlides(this.currentSlide);
     }
 }
