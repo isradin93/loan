@@ -962,11 +962,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Slider =
 /*#__PURE__*/
 function () {
-  function Slider(page, btns) {
+  function Slider(sliderContainer, btns) {
     _classCallCheck(this, Slider);
 
-    this.page = document.querySelector(page);
-    this.slides = this.page.children;
+    this.sliderContainer = document.querySelector(sliderContainer);
+    this.sliders = this.sliderContainer.children;
     this.btns = document.querySelectorAll(btns);
     this.currentSlide = 1;
   }
@@ -975,21 +975,21 @@ function () {
     key: "showSlides",
     value: function showSlides(slideIndex) {
       // When we slide till the end, slider will come to first slider
-      if (slideIndex > this.slides.length) {
+      if (slideIndex > this.sliders.length) {
         this.currentSlide = 1;
       } // Vise versa
 
 
       if (slideIndex < 1) {
-        this.currentSlide = this.slides.length;
-      } // Hide all slides in page
+        this.currentSlide = this.sliders.length;
+      } // Hide all sliders in page
 
 
-      this.slides.forEach(function (slide) {
+      this.sliders.forEach(function (slide) {
         return slide.style.display = 'none';
       }); // Show first slide
 
-      this.slides[this.currentSlide - 1].style.display = 'block';
+      this.sliders[this.currentSlide - 1].style.display = 'block';
     } // Add or subtract slide
 
   }, {
