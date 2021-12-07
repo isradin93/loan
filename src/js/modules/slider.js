@@ -22,6 +22,23 @@ export default class Slider {
 
         // Show first slide
         this.slides[this.currentSlide - 1].style.display = 'block';
+
+        // To prevent error, add try catch because teacher only in 3rd slide
+        // Show teacher in 3rd slide
+        try {
+            this.teacher.style.opacity = '0';
+            if (slideIndex === 3) {
+                this.teacher.classList.add('animated');
+                setTimeout(() => {
+                    this.teacher.classList.add('slideInUp');
+                    this.teacher.style.opacity = '1';
+                }, 3000);
+            } else {
+                this.teacher.classList.remove('slideInUp');
+            }
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     // Add or subtract slide
@@ -30,6 +47,15 @@ export default class Slider {
     }
 
     render() {
+        // Get teacher selector in block hanson
+        // To prevent error, add try catch because teacher only in 3rd slide
+        try {
+            this.teacher = document.querySelector('.hanson');
+        } catch (e) {
+            console.error(e);
+        }
+
+        // Show/Move slides by clicking button
         this.btns.forEach(btn => {
             btn.addEventListener('click', e => {
                 e.preventDefault();

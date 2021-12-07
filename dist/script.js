@@ -973,6 +973,8 @@ function () {
   _createClass(Slider, [{
     key: "showSlides",
     value: function showSlides(slideIndex) {
+      var _this = this;
+
       // When we slide till the end, slider will come to first slider
       if (slideIndex > this.slides.length) {
         this.currentSlide = 1;
@@ -988,7 +990,25 @@ function () {
         return slide.style.display = 'none';
       }); // Show first slide
 
-      this.slides[this.currentSlide - 1].style.display = 'block';
+      this.slides[this.currentSlide - 1].style.display = 'block'; // To prevent error, add try catch because teacher only in 3rd slide
+      // Show teacher in 3rd slide
+
+      try {
+        this.teacher.style.opacity = '0';
+
+        if (slideIndex === 3) {
+          this.teacher.classList.add('animated');
+          setTimeout(function () {
+            _this.teacher.classList.add('slideInUp');
+
+            _this.teacher.style.opacity = '1';
+          }, 3000);
+        } else {
+          this.teacher.classList.remove('slideInUp');
+        }
+      } catch (e) {
+        console.error(e);
+      }
     } // Add or subtract slide
 
   }, {
@@ -999,20 +1019,29 @@ function () {
   }, {
     key: "render",
     value: function render() {
-      var _this = this;
+      var _this2 = this;
+
+      // Get teacher selector in block hanson
+      // To prevent error, add try catch because teacher only in 3rd slide
+      try {
+        this.teacher = document.querySelector('.hanson');
+      } catch (e) {
+        console.error(e);
+      } // Show/Move slides by clicking button
+
 
       this.btns.forEach(function (btn) {
         btn.addEventListener('click', function (e) {
           e.preventDefault();
 
-          _this.plusSlides(1);
+          _this2.plusSlides(1);
         }); // When click on D, show first slide
 
         btn.parentNode.previousElementSibling.addEventListener('click', function (e) {
           e.preventDefault();
-          _this.currentSlide = 1;
+          _this2.currentSlide = 1;
 
-          _this.showSlides(_this.currentSlide);
+          _this2.showSlides(_this2.currentSlide);
         });
       }); // Start first initialization
 
