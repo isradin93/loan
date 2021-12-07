@@ -933,8 +933,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider */ "./src/js/modules/slider.js");
 
 window.addEventListener('DOMContentLoaded', function () {
-  var slider = new _modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"]('.page', '.next');
-  slider.render();
+  new _modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"]('.page', '.next').render();
 });
 
 /***/ }),
@@ -966,7 +965,7 @@ function () {
     _classCallCheck(this, Slider);
 
     this.sliderContainer = document.querySelector(sliderContainer);
-    this.sliders = this.sliderContainer.children;
+    this.slides = this.sliderContainer.children;
     this.btns = document.querySelectorAll(btns);
     this.currentSlide = 1;
   }
@@ -975,21 +974,21 @@ function () {
     key: "showSlides",
     value: function showSlides(slideIndex) {
       // When we slide till the end, slider will come to first slider
-      if (slideIndex > this.sliders.length) {
+      if (slideIndex > this.slides.length) {
         this.currentSlide = 1;
       } // Vise versa
 
 
       if (slideIndex < 1) {
-        this.currentSlide = this.sliders.length;
+        this.currentSlide = this.slides.length;
       } // Hide all sliders in page
 
 
-      this.sliders.forEach(function (slide) {
+      this.slides.forEach(function (slide) {
         return slide.style.display = 'none';
       }); // Show first slide
 
-      this.sliders[this.currentSlide - 1].style.display = 'block';
+      this.slides[this.currentSlide - 1].style.display = 'block';
     } // Add or subtract slide
 
   }, {
@@ -1003,9 +1002,12 @@ function () {
       var _this = this;
 
       this.btns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+
           _this.plusSlides(1);
-        });
+        }); // When click on D, show first slide
+
         btn.parentNode.previousElementSibling.addEventListener('click', function (e) {
           e.preventDefault();
           _this.currentSlide = 1;
