@@ -1,1 +1,2 @@
-# Education website. Multi-page site made in OOP.
+# Education website. Multi-page site made in OOP
+
