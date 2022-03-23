@@ -936,7 +936,7 @@ __webpack_require__.r(__webpack_exports__);
 
 window.addEventListener('DOMContentLoaded', function () {
   new _modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"]('.page', '.next').render();
-  new _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__["default"]('.showup .play', '.overlay').init();
+  new _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__["default"]('.showup .play', '.overlay').render();
 });
 
 /***/ }),
@@ -950,7 +950,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PlayVideo; });
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -968,8 +967,9 @@ function () {
     _classCallCheck(this, PlayVideo);
 
     this.btns = document.querySelectorAll(triggers);
-    this.overlay = document.querySelector(overlay);
-    this.closeOverlay = this.overlay.querySelector('.close');
+    this.modal = document.querySelector(overlay);
+    this.closeBtn = this.modal.querySelector('.close');
+    console.log(this.closeBtn);
   }
 
   _createClass(PlayVideo, [{
@@ -979,37 +979,55 @@ function () {
 
       this.btns.forEach(function (btn) {
         btn.addEventListener('click', function () {
-          var path = btn.getAttribute('data-url');
+          // Create player only once
+          if (document.querySelector('iframe#frame')) {
+            _this.modal.style.display = 'flex';
+          } else {
+            var urlPath = btn.getAttribute('data-url');
 
-          _this.createPlayer(path);
+            _this.createVideoPlayer(urlPath);
+          }
         });
       });
     }
   }, {
-    key: "createPlayer",
-    value: function createPlayer(url) {
+    key: "bindCloseBtn",
+    value: function bindCloseBtn() {
+      var _this2 = this;
+
+      this.closeBtn.addEventListener('click', function () {
+        _this2.modal.style.display = 'none';
+
+        _this2.player.stopVideo();
+      });
+    }
+  }, {
+    key: "createVideoPlayer",
+    value: function createVideoPlayer(url) {
       this.player = new YT.Player('frame', {
         height: '100%',
         width: '100%',
         videoId: url
       });
-      this.overlay.style.display = 'flex';
+      this.modal.style.display = 'flex';
     }
   }, {
-    key: "init",
-    value: function init() {
+    key: "render",
+    value: function render() {
+      // This code loads the IFrame Player API code asynchronously.
       var tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
       var firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
       this.bindTriggers();
+      this.bindCloseBtn();
     }
   }]);
 
   return PlayVideo;
 }();
 
-
+/* harmony default export */ __webpack_exports__["default"] = (PlayVideo);
 
 /***/ }),
 
